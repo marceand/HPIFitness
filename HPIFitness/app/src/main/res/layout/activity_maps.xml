@@ -1,0 +1,79 @@
+<LinearLayout
+          android:name="com.google.android.gms.maps.SupportMapFragment"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:map="http://schemas.android.com/apk/res-auto"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:layout_weight="2"
+          tools:context="com.marceme.hpifitness.MapsActivity">
+
+    <fragment
+        android:id="@+id/map_fragment"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
+    </fragment>
+
+    <RelativeLayout
+        android:id="@+id/time_dis_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/container_margin">
+
+        <TextView
+            android:id="@+id/text_view_distance_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/distance_label"
+            android:textStyle="bold"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:padding="@dimen/label_padding"/>
+
+        <TextView
+            android:id="@+id/text_view_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0.0 mi"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/text_view_distance_label"
+            android:padding="@dimen/label_padding"/>
+
+        <TextView
+            android:id="@+id/text_view_time_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/time_label"
+            android:textStyle="bold"
+            android:layout_below="@+id/text_view_distance_label"
+            android:layout_alignParentStart="true"
+            android:padding="@dimen/label_padding"/>
+
+        <TextView
+            android:id="@+id/text_view_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="0.0"
+            android:layout_below="@+id/text_view_distance_label"
+            android:layout_toEndOf="@+id/text_view_distance_label"
+            android:padding="@dimen/label_padding"/>
+
+        <Button
+            android:id="@+id/start_stop_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start_label"
+            android:layout_below="@+id/text_view_time"
+            android:layout_toEndOf="@+id/text_view_distance"/>
+    </RelativeLayout>
+
+
+    </LinearLayout>
+
+

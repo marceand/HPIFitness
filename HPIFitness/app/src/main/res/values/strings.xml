@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">HPIFitness</string>
+    <string name="title_activity_maps">Map</string>
+
+
+    <string name="distance_label">Distance:</string>
+    <string name="time_label">Time:</string>
+    <string name="start_label">Start</string>
+
+
 </resources>
