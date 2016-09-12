@@ -65,12 +65,13 @@
             android:padding="@dimen/label_padding"/>
 
         <Button
-            android:id="@+id/start_stop_btn"
+            android:id="@+id/start_stop_walk_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_label"
+            android:text="@string/start_walk"
             android:layout_below="@+id/text_view_time"
-            android:layout_toEndOf="@+id/text_view_distance"/>
+            android:layout_toEndOf="@+id/text_view_distance"
+            android:onClick="walkActivityBtnClick"/>
     </RelativeLayout>
 
 

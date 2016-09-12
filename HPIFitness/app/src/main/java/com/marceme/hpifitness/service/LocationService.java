@@ -26,16 +26,25 @@ public class LocationService extends Service implements LocationProvider.Locatio
     private Location mCurrentLocation;
     private Location mPreviousLocation;
     private boolean isBroadcastAllow;
-    private float    mTotalDistance;
+    private float mDistanceCovered;
 
-    private long startTime, endTime;
+    private long startTime;
 
     private IBinder mIBinder = new LocalBinder();
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.e(TAG, "onCreate");
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        Log.e(TAG, "onStartCommand");
+
         if(!isRunning) {
+            Log.e(TAG, "inside running");
             mLocationProvider = new LocationProvider(this, this);
             mLocationProvider.connect();
             mLocationProvider.changeSetting(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 60*1000, 20*1000);
@@ -67,10 +76,10 @@ public class LocationService extends Service implements LocationProvider.Locatio
 
         if(mPreviousLocation == null){
             mPreviousLocation= mCurrentLocation;
-            mTotalDistance = 0;
+            mDistanceCovered = 0;
         }else {
             float distanceDiff = mPreviousLocation.distanceTo(mCurrentLocation); // Return meter unit
-            mTotalDistance = mTotalDistance + distanceDiff;
+            mDistanceCovered = mDistanceCovered + distanceDiff;
         }
     }
 
@@ -126,10 +135,13 @@ public class LocationService extends Service implements LocationProvider.Locatio
     }
 
     public long elapsedTime() {
-        return endTime > startTime ?
-                (endTime - startTime) / 1000 :
-                (System.currentTimeMillis() - startTime) / 1000;
+        return (System.currentTimeMillis() - startTime) / 1000;
     }
+
+    public float distanceCovered() {
+        return mDistanceCovered;
+    }
+
 
     public class LocalBinder extends Binder {
         public LocationService getService(){

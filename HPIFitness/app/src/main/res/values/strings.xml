@@ -5,7 +5,9 @@
 
     <string name="distance_label">Distance:</string>
     <string name="time_label">Time:</string>
-    <string name="start_label">Start</string>
+    <string name="start_walk">Start Walk</string>
+    <string name="stop_walk">Stop Walk</string>
+    <string name="title_activity_log_in">LogInActivity</string>
 
 
 </resources>

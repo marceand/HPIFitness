@@ -6,6 +6,7 @@
 
     <dimen name="label_padding">4dp</dimen>
     <dimen name="container_margin">20dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 
 </resources>
