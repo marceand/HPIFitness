@@ -75,9 +75,16 @@ public class LocationProvider implements
         }
     }
 
+    public void changeSetting(int priority, long setInterval, long fastInterval){
+        mLocationRequest.setPriority(priority);
+        mLocationRequest.setInterval(setInterval);
+        mLocationRequest.setFastestInterval(fastInterval);
+
+    }
+
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.i(TAG, "onConnectionSuspended " +i);
     }
 
     @Override

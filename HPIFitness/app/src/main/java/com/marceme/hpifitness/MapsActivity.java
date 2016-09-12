@@ -12,11 +12,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,LocationProvider.LocationCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
-
-    private LocationProvider mLocationProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +27,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mapFragment.getMapAsync(this);
 
-        mLocationProvider = new LocationProvider(this, this);
     }
 
     @Override
@@ -40,25 +37,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        mLocationProvider.connect();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mLocationProvider.disconnect();
     }
 
-    @Override
-    public void handleNewLocation(Location location) {
-        double currentLatitude = location.getLatitude();
-        double currentLongitude = location.getLongitude();
-        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-
-        MarkerOptions options = new MarkerOptions()
-                .position(latLng)
-                .title("I am here!");
-        mMap.addMarker(options);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-    }
+//    @Override
+//    public void handleNewLocation(Location location) {
+//        double currentLatitude = location.getLatitude();
+//        double currentLongitude = location.getLongitude();
+//        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+//
+//        MarkerOptions options = new MarkerOptions()
+//                .position(latLng)
+//                .title("I am here!");
+//        mMap.addMarker(options);
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+//    }
 }
