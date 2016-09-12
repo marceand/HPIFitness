@@ -1,13 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context="com.marceme.hpifitness.ui.RegisterActivity">
 
-</RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HPFitness"
+        android:id="@+id/brandName"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:layout_marginTop="32dp"
+        android:textColor="#212121"
+        android:layout_gravity="center"/>
+
+    <EditText
+        android:id="@+id/firstNameSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/firstname_hint"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/ligh_gray"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp">
+        <requestFocus/>
+    </EditText>
+
+    <EditText
+        android:id="@+id/usernameSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/username_hint"
+        android:inputType="textPersonName"
+        android:textColorHint="@color/ligh_gray"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp">
+        <requestFocus/>
+    </EditText>
+
+    <EditText
+        android:id="@+id/passwordSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:hint="@string/password_hint"
+        android:ems="10"
+        android:textColorHint="@color/ligh_gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"/>
+
+    <Button
+        android:id="@+id/signUpBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up_text"
+        android:layout_below="@+id/passwordSignIn"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:textColor="@color/white_color"
+        android:background="@color/colorPrimary"
+        />
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel_text"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:textColor="@color/white_color"
+        android:background="@color/colorPrimary"/>
+
+</LinearLayout>

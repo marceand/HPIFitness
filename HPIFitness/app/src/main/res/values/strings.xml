@@ -8,6 +8,14 @@
     <string name="start_walk">Start Walk</string>
     <string name="stop_walk">Stop Walk</string>
     <string name="title_activity_log_in">LogInActivity</string>
+    <string name="firstname_hint">Username</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button_label">Log In</string>
+    <string name="sign_up_text">Sign up</string>
+    <string name="cancel_text">Cancel</string>
 
+    <string name="login_error_title">Checking</string>
+    <string name="login_error_message">Please make sure you enter a username and password!</string>
 
 </resources>

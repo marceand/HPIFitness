@@ -7,7 +7,7 @@
           android:layout_height="match_parent"
           android:orientation="vertical"
           android:layout_weight="2"
-          tools:context="com.marceme.hpifitness.MapsActivity">
+          tools:context=".ui.MapsActivity">
 
     <fragment
         android:id="@+id/map_fragment"

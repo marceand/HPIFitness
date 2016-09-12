@@ -13,9 +13,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.google.android.gms.location.LocationRequest;
 import com.marceme.hpifitness.LocationProvider;
-import com.marceme.hpifitness.MapsActivity;
+import com.marceme.hpifitness.ui.MapsActivity;
 import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.util.Util;
 

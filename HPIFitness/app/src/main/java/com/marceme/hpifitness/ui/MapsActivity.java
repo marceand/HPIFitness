@@ -1,4 +1,4 @@
-package com.marceme.hpifitness;
+package com.marceme.hpifitness.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -25,6 +25,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.service.LocationService;
 import com.marceme.hpifitness.util.Util;
 
