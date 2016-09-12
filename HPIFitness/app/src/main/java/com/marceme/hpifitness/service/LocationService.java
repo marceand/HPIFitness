@@ -1,17 +1,22 @@
 package com.marceme.hpifitness.service;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.location.LocationRequest;
 import com.marceme.hpifitness.LocationProvider;
+import com.marceme.hpifitness.MapsActivity;
+import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.util.Util;
 
 /**
@@ -20,9 +25,10 @@ import com.marceme.hpifitness.util.Util;
 public class LocationService extends Service implements LocationProvider.LocationCallback{
 
     private static final String TAG = Location.class.getSimpleName();
+    private static final int NOTIFICATION_ID = 11;
 
     private LocationProvider mLocationProvider;
-    private boolean isRunning;
+    private boolean isUserWalking;
     private Location mCurrentLocation;
     private Location mPreviousLocation;
     private boolean isBroadcastAllow;
@@ -32,25 +38,31 @@ public class LocationService extends Service implements LocationProvider.Locatio
 
     private IBinder mIBinder = new LocalBinder();
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         Log.e(TAG, "onCreate");
+        mLocationProvider = new LocationProvider(this, this);
+        mLocationProvider.connect();
+        //mLocationProvider.changeSetting(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 10*1000, 5*1000);
+        isUserWalking = false;
+        startTime = 0;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Log.e(TAG, "onStartCommand");
-
-        if(!isRunning) {
-            Log.e(TAG, "inside running");
-            mLocationProvider = new LocationProvider(this, this);
-            mLocationProvider.connect();
-            mLocationProvider.changeSetting(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 60*1000, 20*1000);
-            startTimer();
-            isRunning = true;
-        }
+//        Log.e(TAG, "onStartCommand");
+//
+//        if(!isUserWalking) {
+//            Log.e(TAG, "inside running");
+//            mLocationProvider = new LocationProvider(this, this);
+//            mLocationProvider.connect();
+//            mLocationProvider.changeSetting(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 60*1000, 20*1000);
+//            startTimer();
+//            isUserWalking = true;
+//        }
 
         return START_NOT_STICKY;
     }
@@ -73,13 +85,10 @@ public class LocationService extends Service implements LocationProvider.Locatio
     }
 
     private void calculateDistance(){
-
-        if(mPreviousLocation == null){
-            mPreviousLocation= mCurrentLocation;
-            mDistanceCovered = 0;
-        }else {
+        if(isUserWalking) {
             float distanceDiff = mPreviousLocation.distanceTo(mCurrentLocation); // Return meter unit
             mDistanceCovered = mDistanceCovered + distanceDiff;
+            mPreviousLocation = mCurrentLocation;
         }
     }
 
@@ -103,9 +112,8 @@ public class LocationService extends Service implements LocationProvider.Locatio
 
     @Override
     public void onDestroy() {
-
         Log.e(TAG, "onDestroy");
-        isRunning = false;
+        isUserWalking = false;
         mLocationProvider.disconnect();
 
     }
@@ -114,12 +122,12 @@ public class LocationService extends Service implements LocationProvider.Locatio
     private void broadCastLocation(Location location) {
 
         if(isBroadcastAllow){
-            broadcastRescuerLocation(location);
+            broadcastUserLocation(location);
         }
 
     }
 
-    private void broadcastRescuerLocation(Location location) {
+    private void broadcastUserLocation(Location location) {
 
         Log.e(TAG, " broadcasting");
         Intent in = new Intent(Util.ACTION_NAME_SPACE);
@@ -130,10 +138,6 @@ public class LocationService extends Service implements LocationProvider.Locatio
         LocalBroadcastManager.getInstance(this).sendBroadcast(in);
     }
 
-    private void startTimer() {
-        startTime = System.currentTimeMillis();
-    }
-
     public long elapsedTime() {
         return (System.currentTimeMillis() - startTime) / 1000;
     }
@@ -142,10 +146,59 @@ public class LocationService extends Service implements LocationProvider.Locatio
         return mDistanceCovered;
     }
 
+    public boolean isUserWalking() {
+        return isUserWalking;
+    }
+
+    public void startUserWalk() {
+        if(!isUserWalking){
+            startTime = System.currentTimeMillis();
+            mPreviousLocation = mCurrentLocation;
+            mDistanceCovered = 0;
+            isUserWalking = true;
+        }
+    }
+
+    public void stopUserWalk() {
+        if(isUserWalking){
+            isUserWalking = false;
+        }
+    }
+
+    public Location getUserLocation() {
+        return mCurrentLocation;
+    }
+
 
     public class LocalBinder extends Binder {
         public LocationService getService(){
             return LocationService.this;
         }
     }
+
+    public void startForeground() {
+        startForeground(NOTIFICATION_ID, createNotification());
+    }
+
+    public void stopNotification() {
+        stopForeground(true);
+    }
+
+
+    private Notification createNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setContentTitle("Keel Walking")
+                .setContentText("Tap to return to activity")
+                .setSmallIcon(R.mipmap.ic_launcher);
+
+        Intent resultIntent = new Intent(this, MapsActivity.class);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(this, 0, resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+
+        return builder.build();
+    }
+
+
 }
