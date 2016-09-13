@@ -1,4 +1,4 @@
-package com.marceme.hpifitness;
+package com.marceme.hpifitness.service;
 
 import android.app.Activity;
 import android.content.Context;
@@ -27,10 +27,6 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
 
     public static final String TAG = LocationProvider.class.getSimpleName();
 
-    /*
-     * Define a request code to send to Google Play services
-     * This code is returned in Activity.onActivityResult
-     */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
     public interface LocationCallback {
@@ -48,7 +44,6 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
 
         mLocationCallback = callback;
 
-        // Create the LocationRequest object
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)
@@ -87,9 +82,6 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
         startPeriodicUpdates();
     }
 
-    /*
-* In response to a request to start updates, send a request to Location Services
-*/
     private void startPeriodicUpdates() {
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);

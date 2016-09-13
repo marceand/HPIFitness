@@ -38,13 +38,13 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_location);
+        setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         Realm realm = Realm.getDefaultInstance();
         String id = PrefControlUtil.getID(PrefControlUtil.USER_ID);
         User user = realm.where(User.class).equalTo("id",id).findFirst();
-        if(user !=null){;
+        if(user != null){;
             setDailyStat(user);
             showAchieveMilestone(user.getDistanceCovered());
         }
@@ -87,26 +87,8 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 
-    private void goToDispatchScreen() {
-        Intent intent = new Intent(this, DispatchActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
     @OnClick(R.id.walkBtn)
     public void goToWalkEvent(Button button) {
-
         Intent intent = new Intent(this, WalkActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -115,11 +97,18 @@ public class MainActivity extends AppCompatActivity{
 
     private void showAchieveMilestone(float distanceCovered) {
         int numberOfMilestones = Helper.getNumberOfMilestones(distanceCovered);
-        if(numberOfMilestones>0){
+        if(numberOfMilestones > 0){
             String title = getString(R.string.achievement_title);
             String message = String.format(getString(R.string.achievement_message), numberOfMilestones);
             Helper.displayMessageToUser(this,title,message).show();
         }
+    }
+
+    private void goToDispatchScreen() {
+        Intent intent = new Intent(this, DispatchActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     // Assume user controls the periodic reminder: no reminder at office if user turn off notification
@@ -133,6 +122,8 @@ public class MainActivity extends AppCompatActivity{
         cal.add(Calendar.MINUTE, 20);
 
         AlarmManager alarmManager = getSystemService();
+
+        // Reminder every 1 hour
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),AlarmManager.INTERVAL_HOUR, pendingIntent);
     }
 

@@ -15,7 +15,6 @@ import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +31,6 @@ import com.marceme.hpifitness.model.User;
 import com.marceme.hpifitness.service.LocationService;
 import com.marceme.hpifitness.util.Helper;
 import com.marceme.hpifitness.util.PrefControlUtil;
-import com.marceme.hpifitness.util.Util;
 
 import java.lang.ref.WeakReference;
 
@@ -43,7 +41,7 @@ import io.realm.Realm;
 
 public class WalkActivity extends FragmentActivity implements OnMapReadyCallback{
 
-    private static final String TAG = WalkActivity.class.getSimpleName();
+    //private static final String TAG = WalkActivity.class.getSimpleName();
     private final static int MSG_UPDATE_TIME = 0;
 
     @BindView(R.id.text_view_distance) TextView mDistanceTextView;
@@ -61,9 +59,9 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder binder) {
-            Log.e(TAG, "Service bound");
-            isServiceBound = true;
+            //Log.e(TAG, "Service bound");
 
+            isServiceBound = true;
             LocationService.LocalBinder localBinder = (LocationService.LocalBinder) binder;
             mLocationService = localBinder.getService();
 
@@ -84,15 +82,13 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            Log.e(TAG, " inside locationReceiver");
+            //Log.e(TAG, " inside locationReceiver");
 
-            int resultCode = intent.getIntExtra(Util.INTENT_EXTRA_RESULT_CODE, RESULT_CANCELED);
+            int resultCode = intent.getIntExtra(Helper.INTENT_EXTRA_RESULT_CODE, RESULT_CANCELED);
 
             if (resultCode == RESULT_OK) {
-
-                Log.e(TAG, " received broadcast");
                 Toast.makeText(WalkActivity.this,"new marker",Toast.LENGTH_SHORT).show();
-                Location userLocation = intent.getParcelableExtra(Util.INTENT_USER_LAT_LNG);
+                Location userLocation = intent.getParcelableExtra(Helper.INTENT_USER_LAT_LNG);
                 LatLng latLng = getLatLng(userLocation);
                 updateUserMarkerLocation(latLng);
             }
@@ -116,7 +112,7 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onStart() {
         super.onStart();
-        IntentFilter intentFilter = new IntentFilter(Util.ACTION_NAME_SPACE);
+        IntentFilter intentFilter = new IntentFilter(Helper.ACTION_NAME_SPACE);
         LocalBroadcastManager.getInstance(this).registerReceiver(locationReceiver, intentFilter);
         startLocationService();
     }
@@ -147,27 +143,29 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
-    private void setUpTextViews() {
-        mDistanceTextView = (TextView) findViewById(R.id.text_view_distance);
-        mTimerTextView = (TextView) findViewById(R.id.text_view_time);
-        mWalkBtn = (Button) findViewById(R.id.start_stop_walk_btn);
-    }
-
     @OnClick(R.id.start_stop_walk_btn)
     public void walkActivityBtnClick(Button button) {
         if (isServiceBound && !mLocationService.isUserWalking()) {
-            mLocationService.startUserWalk();
-            mLocationService.startBroadcasting();
-            mLocationService.startForeground();
+            initializeWalkService();
             updateWalkPref(true);
             updateStartWalkUI();
         }else if (isServiceBound && mLocationService.isUserWalking()){
-            mLocationService.stopUserWalk();
-            mLocationService.stopNotification();
+            stopWalkService();
             updateStopWalkUI();
             updateWalkPref(false);
             saveWalkData(mLocationService.distanceCovered(),mLocationService.elapsedTime());
         }
+    }
+
+    private void initializeWalkService() {
+        mLocationService.startUserWalk();
+        mLocationService.startBroadcasting();
+        mLocationService.startForeground();
+    }
+
+    private void stopWalkService() {
+        mLocationService.stopUserWalk();
+        mLocationService.stopNotification();
     }
 
     private void saveWalkData(final float distanceWalked, final long timeWalked) {

@@ -8,13 +8,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.marceme.hpifitness.R;
-import com.marceme.hpifitness.model.User;
-import com.marceme.hpifitness.util.Helper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
 
 public class LogInActivity extends BaseAuthentication {
 

@@ -9,6 +9,10 @@ import android.content.Context;
  */
 public class Helper {
 
+    public static final String ACTION_NAME_SPACE = "com.marceme.hpifitness.LocationService";
+    public static final String INTENT_EXTRA_RESULT_CODE = "resultCode";
+    public static final String INTENT_USER_LAT_LNG = "userLatLng";
+
     public static AlertDialog displayMessageToUser(Context context, String title, String message){
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(message)

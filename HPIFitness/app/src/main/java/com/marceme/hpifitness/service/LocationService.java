@@ -11,19 +11,17 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
-import com.marceme.hpifitness.LocationProvider;
-import com.marceme.hpifitness.ui.WalkActivity;
+import com.marceme.hpifitness.ui.DispatchActivity;
 import com.marceme.hpifitness.R;
-import com.marceme.hpifitness.util.Util;
+import com.marceme.hpifitness.util.Helper;
 
 /**
  * Created by Marcel on 9/11/2016.
  */
 public class LocationService extends Service implements LocationProvider.LocationCallback{
 
-    private static final String TAG = Location.class.getSimpleName();
+    //private static final String TAG = Location.class.getSimpleName();
     private static final int NOTIFICATION_ID = 11;
 
     private LocationProvider mLocationProvider;
@@ -41,37 +39,21 @@ public class LocationService extends Service implements LocationProvider.Locatio
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e(TAG, "onCreate");
         mLocationProvider = new LocationProvider(this, this);
         mLocationProvider.connect();
-        //mLocationProvider.changeSetting(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 10*1000, 5*1000);
         isUserWalking = false;
         startTime = 0;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-//        Log.e(TAG, "onStartCommand");
-//
-//        if(!isUserWalking) {
-//            Log.e(TAG, "inside running");
-//            mLocationProvider = new LocationProvider(this, this);
-//            mLocationProvider.connect();
-//            mLocationProvider.changeSetting(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY, 60*1000, 20*1000);
-//            startTimer();
-//            isUserWalking = true;
-//        }
-
         return START_NOT_STICKY;
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-
         return mIBinder;
-
     }
 
     @Override
@@ -81,13 +63,13 @@ public class LocationService extends Service implements LocationProvider.Locatio
 
     @Override
     public void handleNewLocation(Location location) {
-        Log.e(TAG, " getting new location");
-
+        //Log.e(TAG, " getting new location");
         mCurrentLocation = location;
         calculateDistance();
         broadCastLocation(mCurrentLocation);
     }
 
+    // Assume this algorithm calculates precise distance
     private void calculateDistance(){
         if(isUserWalking) {
             float distanceDiff = mPreviousLocation.distanceTo(mCurrentLocation); // Return meter unit
@@ -97,9 +79,8 @@ public class LocationService extends Service implements LocationProvider.Locatio
     }
 
     public void startBroadcasting() {
-        Log.e(TAG, " start broadcast");
+        //Log.e(TAG, " start broadcast");
         isBroadcastAllow = true;
-
         broadcastFirstLocation();
     }
 
@@ -110,13 +91,13 @@ public class LocationService extends Service implements LocationProvider.Locatio
     }
 
     public void stopBroadcasting() {
-        Log.e(TAG, " stop broadcast");
+        //Log.e(TAG, " stop broadcast");
         isBroadcastAllow = false;
     }
 
     @Override
     public void onDestroy() {
-        Log.e(TAG, "onDestroy");
+        //Log.e(TAG, "onDestroy");
         isUserWalking = false;
         mLocationProvider.disconnect();
 
@@ -133,12 +114,9 @@ public class LocationService extends Service implements LocationProvider.Locatio
 
     private void broadcastUserLocation(Location location) {
 
-        Log.e(TAG, " broadcasting");
-        Intent in = new Intent(Util.ACTION_NAME_SPACE);
-
-        in.putExtra(Util.INTENT_EXTRA_RESULT_CODE, Activity.RESULT_OK);
-        in.putExtra(Util.INTENT_USER_LAT_LNG, location);
-
+        Intent in = new Intent(Helper.ACTION_NAME_SPACE);
+        in.putExtra(Helper.INTENT_EXTRA_RESULT_CODE, Activity.RESULT_OK);
+        in.putExtra(Helper.INTENT_USER_LAT_LNG, location);
         LocalBroadcastManager.getInstance(this).sendBroadcast(in);
     }
 
@@ -180,6 +158,7 @@ public class LocationService extends Service implements LocationProvider.Locatio
         }
     }
 
+    // Prevent system killing the background service
     public void startForeground() {
         startForeground(NOTIFICATION_ID, createNotification());
     }
@@ -191,16 +170,15 @@ public class LocationService extends Service implements LocationProvider.Locatio
 
     private Notification createNotification() {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setContentTitle("Keel Walking")
-                .setContentText("Tap to return to activity")
+                .setContentTitle("Keep Walking")
+                .setContentText("Tap to return to walk activity")
                 .setSmallIcon(R.mipmap.ic_launcher);
 
-        Intent resultIntent = new Intent(this, WalkActivity.class);
+        Intent resultIntent = new Intent(this, DispatchActivity.class);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(this, 0, resultIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);
-
         return builder.build();
     }
 

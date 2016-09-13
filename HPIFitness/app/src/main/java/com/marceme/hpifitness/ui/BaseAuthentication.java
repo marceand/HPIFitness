@@ -16,7 +16,7 @@ import io.realm.Realm;
  */
 public class BaseAuthentication extends AppCompatActivity {
 
-    private Realm mRealm;
+    private Realm mRealm; // Realm is the local database
     protected ProgressDialog mProgressDialog;
 
     @Override
@@ -102,9 +102,14 @@ public class BaseAuthentication extends AppCompatActivity {
         return user;
     }
 
+    // Assume Local Database is server-persisting username, password locally is bab practice
     private void persistUserLocal(final User user){
+
         mProgressDialog.show();
+
+        // Assume the current time is the id session
         final String id = System.currentTimeMillis()+"";
+
         user.setId(id);
         mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
@@ -127,6 +132,7 @@ public class BaseAuthentication extends AppCompatActivity {
 
     }
 
+    // Assume id is the app session token id
     private void persistUserID(String id) {
         PrefControlUtil.setID(PrefControlUtil.USER_ID, id);
     }
