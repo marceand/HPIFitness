@@ -14,27 +14,32 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
 /**
- * Created by Marcel on 9/11/2016.
+ * Created by Marcel on 2/22/2016.
  */
-public class LocationProvider implements
-        GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
-    public abstract interface LocationCallback {
-        public void handleNewLocation(Location location);
-    }
+    private final LocationCallback mLocationCallback;
+    private final GoogleApiClient mGoogleApiClient;
+    private final LocationRequest mLocationRequest;
+    private final Context mContext;
+
 
     public static final String TAG = LocationProvider.class.getSimpleName();
 
+    /*
+     * Define a request code to send to Google Play services
+     * This code is returned in Activity.onActivityResult
+     */
     private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 
-    private LocationCallback mLocationCallback;
-    private Context mContext;
-    private GoogleApiClient mGoogleApiClient;
-    private LocationRequest mLocationRequest;
+    public interface LocationCallback {
+        void handleInitialLocation(Location location);
+        void handleNewLocation(Location location);
+    }
 
     public LocationProvider(Context context, LocationCallback callback) {
+
         mGoogleApiClient = new GoogleApiClient.Builder(context)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -43,12 +48,14 @@ public class LocationProvider implements
 
         mLocationCallback = callback;
 
+        // Create the LocationRequest object
         mLocationRequest = LocationRequest.create()
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(10 * 1000)
                 .setFastestInterval(5 * 1000);
 
         mContext = context;
+
     }
 
     public void connect() {
@@ -62,30 +69,37 @@ public class LocationProvider implements
         }
     }
 
-    @Override
-    public void onConnected(Bundle bundle) {
-        Log.i(TAG, "Location services connected.");
-
-        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (location == null) {
-            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        }
-        else {
-            mLocationCallback.handleNewLocation(location);
-        }
-    }
-
     public void changeSetting(int priority, long setInterval, long fastInterval){
+
         mLocationRequest.setPriority(priority);
         mLocationRequest.setInterval(setInterval);
         mLocationRequest.setFastestInterval(fastInterval);
 
     }
 
+
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        mLocationCallback.handleInitialLocation(location);
+        startPeriodicUpdates();
+    }
+
+    /*
+* In response to a request to start updates, send a request to Location Services
+*/
+    private void startPeriodicUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
+    }
+
     @Override
     public void onConnectionSuspended(int i) {
-        Log.i(TAG, "onConnectionSuspended " +i);
+
     }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
@@ -100,6 +114,7 @@ public class LocationProvider implements
         } else {
             Log.i(TAG, "Location services connection failed with code " + connectionResult.getErrorCode());
         }
+
     }
 
     @Override

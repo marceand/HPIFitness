@@ -8,13 +8,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.marceme.hpifitness.R;
+import com.marceme.hpifitness.model.User;
 import com.marceme.hpifitness.util.Helper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
 
-public class LogInActivity extends AppCompatActivity {
+public class LogInActivity extends BaseAuthentication {
 
     @BindView(R.id.usernameSignIn) EditText mUsername;
     @BindView(R.id.passwordSignIn) EditText mPassword;
@@ -37,19 +39,5 @@ public class LogInActivity extends AppCompatActivity {
     public void goToSignUpClickEvent(Button button) {
         Intent intent = new Intent(this, RegisterActivity.class);
         startActivity(intent);
-    }
-
-    private void checkEmptyFields(String username, String password) {
-        if(username.isEmpty() || password.isEmpty()) {
-            Helper.displayMessageToUser(this,
-                    getString(R.string.login_error_title),
-                    getString(R.string.login_error_message)).show();
-        }else{
-            goToFitnessScreen();
-        }
-    }
-
-    private void goToFitnessScreen() {
-
     }
 }

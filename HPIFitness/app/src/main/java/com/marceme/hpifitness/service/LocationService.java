@@ -75,6 +75,11 @@ public class LocationService extends Service implements LocationProvider.Locatio
     }
 
     @Override
+    public void handleInitialLocation(Location location) {
+        mCurrentLocation = location;
+    }
+
+    @Override
     public void handleNewLocation(Location location) {
         Log.e(TAG, " getting new location");
 

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -79,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (resultCode == RESULT_OK) {
 
                 Log.e(TAG, " received broadcast");
-
+                Toast.makeText(MapsActivity.this,"new marker",Toast.LENGTH_SHORT).show();
                 Location userLocation = intent.getParcelableExtra(Util.INTENT_USER_LAT_LNG);
                 LatLng latLng = getLatLng(userLocation);
                 updateUserMarkerLocation(latLng);

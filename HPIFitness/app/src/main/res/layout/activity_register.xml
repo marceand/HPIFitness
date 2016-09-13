@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white_color"
     tools:context="com.marceme.hpifitness.ui.RegisterActivity">
 
 
@@ -39,6 +40,7 @@
         android:hint="@string/username_hint"
         android:inputType="textPersonName"
         android:textColorHint="@color/ligh_gray"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="40dp"
         android:layout_marginLeft="40dp">
         <requestFocus/>
