@@ -42,8 +42,11 @@
         </activity>
         <activity android:name=".ui.MainActivity">
         </activity>
-        <activity android:name=".ui.MapsActivity">
+        <activity android:name=".ui.WalkActivity">
         </activity>
+
+        <receiver android:name=".notification.NotificationBroadcaster" />
+
     </application>
 
 </manifest>

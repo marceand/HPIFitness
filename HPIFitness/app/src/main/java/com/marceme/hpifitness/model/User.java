@@ -13,6 +13,7 @@ public class User extends RealmObject {
     private String password;
     private long   totalTimeWalk;
     private float   distanceCovered;
+    private float   pace;
 
     public String getId() {
         return id;
@@ -60,5 +61,13 @@ public class User extends RealmObject {
 
     public void setDistanceCovered(float distanceCovered) {
         this.distanceCovered = distanceCovered;
+    }
+
+    public float getPace() {
+        return pace;
+    }
+
+    public void setPace(float pace) {
+        this.pace = pace;
     }
 }

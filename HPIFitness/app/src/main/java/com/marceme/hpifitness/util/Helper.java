@@ -23,4 +23,26 @@ public class Helper {
         progressDialog.setMessage(message);
         return progressDialog;
     }
+
+    public static int secondToMinuteConverter(long seconds){
+        return (int)seconds/60;
+    }
+    public static float meterToMileConverter(float meter){
+        return meter/1609;
+    }
+
+    public static int getNumberOfMilestones(float meter){
+        return (int)meter/305; // 1000 feet -> 304.8
+    }
+
+    public static String secondToHHMMSS(long secondsCount){
+
+        long seconds = secondsCount %60;
+        secondsCount -= seconds;
+        long minutesCount = secondsCount / 60;
+        long minutes = minutesCount % 60;
+        minutesCount -= minutes;
+        long hoursCount = minutesCount / 60;
+        return "" + hoursCount + ":" + minutes + ":" + seconds;
+    }
 }

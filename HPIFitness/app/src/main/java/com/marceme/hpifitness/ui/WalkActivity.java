@@ -32,9 +32,9 @@ import com.marceme.hpifitness.util.Util;
 
 import java.lang.ref.WeakReference;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback{
+public class WalkActivity extends FragmentActivity implements OnMapReadyCallback{
 
-    private static final String TAG = MapsActivity.class.getSimpleName();
+    private static final String TAG = WalkActivity.class.getSimpleName();
     private final static int MSG_UPDATE_TIME = 0;
 
     private TextView mDistanceTextView;
@@ -80,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (resultCode == RESULT_OK) {
 
                 Log.e(TAG, " received broadcast");
-                Toast.makeText(MapsActivity.this,"new marker",Toast.LENGTH_SHORT).show();
+                Toast.makeText(WalkActivity.this,"new marker",Toast.LENGTH_SHORT).show();
                 Location userLocation = intent.getParcelableExtra(Util.INTENT_USER_LAT_LNG);
                 LatLng latLng = getLatLng(userLocation);
                 updateUserMarkerLocation(latLng);
@@ -222,9 +222,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static class UIUpdateHandler extends Handler {
 
         private final static int UPDATE_RATE_MS = 1000;
-        private final WeakReference<MapsActivity> activity;
+        private final WeakReference<WalkActivity> activity;
 
-        UIUpdateHandler(MapsActivity activity) {
+        UIUpdateHandler(WalkActivity activity) {
             this.activity = new WeakReference<>(activity);
         }
 

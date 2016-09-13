@@ -14,7 +14,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.marceme.hpifitness.LocationProvider;
-import com.marceme.hpifitness.ui.MapsActivity;
+import com.marceme.hpifitness.ui.WalkActivity;
 import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.util.Util;
 
@@ -195,7 +195,7 @@ public class LocationService extends Service implements LocationProvider.Locatio
                 .setContentText("Tap to return to activity")
                 .setSmallIcon(R.mipmap.ic_launcher);
 
-        Intent resultIntent = new Intent(this, MapsActivity.class);
+        Intent resultIntent = new Intent(this, WalkActivity.class);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(this, 0, resultIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);

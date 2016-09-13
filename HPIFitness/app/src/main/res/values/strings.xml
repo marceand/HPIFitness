@@ -22,4 +22,22 @@
     <string name="not_found_error_message">Incorrect username or password. Try again!</string>
     <string name="log_progress_dialog_message">Logging you in&#8230;</string>
 
+    <string name="menu_logout_label">Log Out</string>
+    <string name="menu_cancel_not">Cancel Notification</string>
+
+    <string name="daily_distance_label">Distance Walked</string>
+    <string name="daily_time_label">Total Time</string>
+    <string name="daily_pace_label">Pace</string>
+
+    <string name="message_label">Hi %s!, stay healthy</string>
+    <string name="daily_dist_data">%.1f mi</string>
+    <string name="daily_time_data">%d min</string>
+    <string name="daily_pace_data">%.1f mi/s</string>
+    <string name="achievement_title">Achievement</string>
+    <string name="achievement_message">You have %d milestones of 1000 feet. Stay healthy!</string>
+
+    <string name="notification_message">Go for a walk today.</string>
+
+
+
 </resources>
