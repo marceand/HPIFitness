@@ -35,7 +35,7 @@ public class RegisterActivity extends BaseAuthentication{
         String firstName = mFirstName.getText().toString().trim();
         String username = mUsername.getText().toString().trim();
         String password = mPassword.getText().toString().trim();
-        checkEmptyFields(firstName, username, password);
+        logInToMainScreen(firstName, username, password);
     }
 
     @OnClick(R.id.cancelBtn)

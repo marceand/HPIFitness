@@ -32,7 +32,7 @@ public class LogInActivity extends BaseAuthentication {
     public void signInClickEvent(Button button) {
         String username = mUsername.getText().toString().trim();
         String password = mPassword.getText().toString().trim();
-        checkEmptyFields(username, password);
+        logInToMainScreen(username, password);
     }
 
     @OnClick(R.id.goToSignUpBtn)

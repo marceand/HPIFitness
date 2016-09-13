@@ -8,6 +8,7 @@
     <string name="start_walk">Start Walk</string>
     <string name="stop_walk">Stop Walk</string>
     <string name="title_activity_log_in">LogInActivity</string>
+    <string name="logo_name">HPIFitness</string>
     <string name="firstname_hint">First name</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
@@ -17,7 +18,8 @@
 
     <string name="login_error_title">Checking</string>
     <string name="login_error_message">Please make sure you enter a username and password!</string>
-    <string name="auth_error_message">Username or Password exists</string>
-    <string name="not_found_error_message">Incorrect username or password</string>
+    <string name="user_exist_error_message">Username or Password exists</string>
+    <string name="not_found_error_message">Incorrect username or password. Try again!</string>
+    <string name="log_progress_dialog_message">Logging you in&#8230;</string>
 
 </resources>

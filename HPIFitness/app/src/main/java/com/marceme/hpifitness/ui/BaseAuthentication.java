@@ -1,10 +1,12 @@
 package com.marceme.hpifitness.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
 import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.model.User;
+import com.marceme.hpifitness.util.AuthUtil;
 import com.marceme.hpifitness.util.Helper;
 
 import io.realm.Realm;
@@ -14,8 +16,24 @@ import io.realm.Realm;
  */
 public class BaseAuthentication extends AppCompatActivity {
 
-    protected void checkEmptyFields(String firstName, String username, String password) {
-        if(firstName.isEmpty() || username.isEmpty() || password.isEmpty()) {
+    private Realm mRealm;
+    protected ProgressDialog mProgressDialog;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mRealm = Realm.getDefaultInstance();
+        mProgressDialog = Helper.displayProgressDialog(this, false, getString(R.string.log_progress_dialog_message));
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mRealm.close();
+    }
+
+    protected void logInToMainScreen(String firstName, String username, String password) {
+        if(isEmptyField(firstName,username,password)) {
             Helper.displayMessageToUser(this,
                     getString(R.string.login_error_title),
                     getString(R.string.login_error_message)).show();
@@ -24,8 +42,8 @@ public class BaseAuthentication extends AppCompatActivity {
         }
     }
 
-    protected void checkEmptyFields(String username, String password) {
-        if(username.isEmpty() || password.isEmpty()) {
+    protected void logInToMainScreen(String username, String password) {
+        if(isEmptyField(username,password)) {
             Helper.displayMessageToUser(this,
                     getString(R.string.login_error_title),
                     getString(R.string.login_error_message)).show();
@@ -34,35 +52,46 @@ public class BaseAuthentication extends AppCompatActivity {
         }
     }
 
+    private boolean isEmptyField(String firstName, String username, String password) {
+        if(firstName.isEmpty() || username.isEmpty() || password.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
+    protected boolean isEmptyField(String username, String password) {
+        if(username.isEmpty() || password.isEmpty()) {
+            return true;
+        }
+        return false;
+    }
+
     private void authenticateUser(String username, String password) {
 
-        boolean isUserExits = checkUserExist(username, password);
-        if(!isUserExits){
+        User user = queryUser(username,password);
+        if(user == null){
             Helper.displayMessageToUser(this,
                     getString(R.string.login_error_title),
                     getString(R.string.not_found_error_message)).show();
         }else{
-            goToFitnessScreen();
+            persistUserID(user.getId());
+            goToDispatch();
         }
     }
 
     private void authenticateUser(String firstName, String username, String password) {
 
-        boolean isUserExits = checkUserExist(username, password);
-        if(isUserExits){
+        if(queryUser(username, password)!= null){
             Helper.displayMessageToUser(this,
                     getString(R.string.login_error_title),
-                    getString(R.string.auth_error_message)).show();
+                    getString(R.string.user_exist_error_message)).show();
         }else{
             persistUserLocal(createNewUser(firstName,username,password));
-            goToFitnessScreen();
         }
     }
 
-    private boolean checkUserExist(String username, String password) {
-        Realm realm = Realm.getDefaultInstance();
-        User result = realm.where(User.class).equalTo("username",username).equalTo("password",password).findFirst();
-        return result == null;
+    private User queryUser(String username, String password) {
+        return mRealm.where(User.class).equalTo("username",username).equalTo("password",password).findFirst();
     }
 
     private User createNewUser(String firstName, String username, String password) {
@@ -73,15 +102,37 @@ public class BaseAuthentication extends AppCompatActivity {
         return user;
     }
 
-    private void persistUserLocal(User user){
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.copyToRealm(user);
-        realm.commitTransaction();
+    private void persistUserLocal(final User user){
+        mProgressDialog.show();
+        final String id = System.currentTimeMillis()+"";
+        user.setId(id);
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm bgRealm) {
+                bgRealm.copyToRealm(user);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+                mProgressDialog.dismiss();
+                persistUserID(id);
+                goToDispatch();
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                mProgressDialog.dismiss();
+            }
+        });
+
     }
 
-    private void goToFitnessScreen() {
-        Intent intent = new Intent(this, LocationActivity.class);
+    private void persistUserID(String id) {
+        AuthUtil.setID(AuthUtil.USER_ID, id);
+    }
+
+    private void goToDispatch() {
+        Intent intent = new Intent(this, DispatchActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
