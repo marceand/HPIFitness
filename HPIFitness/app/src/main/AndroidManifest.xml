@@ -30,10 +30,10 @@
 
         <activity
             android:name=".ui.LogInActivity"
-            android:label="@string/title_activity_log_in"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/title_activity_log_in">
         </activity>
-        <activity android:name=".ui.RegisterActivity">
+        <activity android:name=".ui.RegisterActivity"
+                  android:label="@string/sign_up_text">
         </activity>
         <activity android:name=".ui.MainActivity">
         </activity>

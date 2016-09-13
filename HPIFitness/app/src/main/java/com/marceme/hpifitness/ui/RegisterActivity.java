@@ -1,21 +1,14 @@
 package com.marceme.hpifitness.ui;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.marceme.hpifitness.R;
-import com.marceme.hpifitness.model.User;
-import com.marceme.hpifitness.util.Helper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class RegisterActivity extends BaseAuthentication{
 

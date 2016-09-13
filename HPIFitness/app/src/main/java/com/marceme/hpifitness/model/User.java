@@ -1,7 +1,6 @@
 package com.marceme.hpifitness.model;
 
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Marcel on 9/12/2016.

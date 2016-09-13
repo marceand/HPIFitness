@@ -1,14 +1,14 @@
 package com.marceme.hpifitness.ui;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 
 import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.model.User;
-import com.marceme.hpifitness.util.PrefControlUtil;
 import com.marceme.hpifitness.util.Helper;
+import com.marceme.hpifitness.util.PrefControlUtil;
 
+import butterknife.internal.Utils;
 import io.realm.Realm;
 
 /**
@@ -41,6 +41,7 @@ public class BaseAuthentication extends AppCompatActivity {
             authenticateUser(firstName, username, password);
         }
     }
+
 
     protected void logInToMainScreen(String username, String password) {
         if(isEmptyField(username,password)) {
@@ -94,6 +95,7 @@ public class BaseAuthentication extends AppCompatActivity {
         return mRealm.where(User.class).equalTo("username",username).equalTo("password",password).findFirst();
     }
 
+    // Assume password is hash or encrypted before saving to local database
     private User createNewUser(String firstName, String username, String password) {
         User user = new User();
         user.setFirstName(firstName);
@@ -102,7 +104,7 @@ public class BaseAuthentication extends AppCompatActivity {
         return user;
     }
 
-    // Assume Local Database is server-persisting username, password locally is bab practice
+    // Assume Database is in the server side - persisting username, password locally is bab practice
     private void persistUserLocal(final User user){
 
         mProgressDialog.show();
@@ -138,10 +140,7 @@ public class BaseAuthentication extends AppCompatActivity {
     }
 
     private void goToDispatch() {
-        Intent intent = new Intent(this, DispatchActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        startActivity(Helper.getIntent(this,DispatchActivity.class));
     }
 
 }

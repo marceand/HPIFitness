@@ -7,13 +7,13 @@
     <string name="time_label">Time:</string>
     <string name="start_walk">Start Walk</string>
     <string name="stop_walk">Stop Walk</string>
-    <string name="title_activity_log_in">LogInActivity</string>
+    <string name="title_activity_log_in">LogIn</string>
     <string name="logo_name">HPIFitness</string>
     <string name="firstname_hint">First name</string>
     <string name="username_hint">Username</string>
     <string name="password_hint">Password</string>
     <string name="login_button_label">Log In</string>
-    <string name="sign_up_text">Sign up</string>
+    <string name="sign_up_text">Sign Up</string>
     <string name="cancel_text">Cancel</string>
 
     <string name="login_error_title">Checking</string>
@@ -29,7 +29,7 @@
     <string name="daily_time_label">Total Time</string>
     <string name="daily_pace_label">Pace</string>
 
-    <string name="message_label">Hi %s!, stay healthy</string>
+    <string name="message_label">Hi %s! Stay healthy</string>
     <string name="daily_dist_data">%.1f mi</string>
     <string name="daily_time_data">%d min</string>
     <string name="daily_pace_data">%.1f min/mi</string>

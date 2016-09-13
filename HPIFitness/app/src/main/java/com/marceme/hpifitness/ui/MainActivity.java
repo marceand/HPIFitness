@@ -6,9 +6,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.model.User;
 import com.marceme.hpifitness.notification.NotificationBroadcaster;
-import com.marceme.hpifitness.util.PrefControlUtil;
 import com.marceme.hpifitness.util.Helper;
+import com.marceme.hpifitness.util.PrefControlUtil;
 
 import java.util.Calendar;
 
@@ -89,10 +89,7 @@ public class MainActivity extends AppCompatActivity{
 
     @OnClick(R.id.walkBtn)
     public void goToWalkEvent(Button button) {
-        Intent intent = new Intent(this, WalkActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        startActivity(Helper.getIntent(this,WalkActivity.class));
     }
 
     private void showAchieveMilestone(float distanceCovered) {
@@ -105,10 +102,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void goToDispatchScreen() {
-        Intent intent = new Intent(this, DispatchActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
+        startActivity(Helper.getIntent(this,DispatchActivity.class));
     }
 
     // Assume user controls the periodic reminder: no reminder at office if user turn off notification

@@ -8,11 +8,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.location.Location;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.widget.Button;
@@ -296,7 +296,6 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void goToDispatchActivity() {
-        Intent intent = new Intent(this, DispatchActivity.class);
-        startActivity(intent);
+        startActivity(Helper.getIntent(this,DispatchActivity.class));
     }
 }
