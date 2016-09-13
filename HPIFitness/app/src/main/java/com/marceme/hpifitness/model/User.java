@@ -70,4 +70,12 @@ public class User extends RealmObject {
     public void setPace(float pace) {
         this.pace = pace;
     }
+
+    public void updateDistanceCovered(float distanceWalked) {
+        this.distanceCovered = this.distanceCovered + distanceWalked;
+    }
+
+    public void updateTotalTimeWalk(long timeWalked) {
+        this.totalTimeWalk = this.totalTimeWalk+timeWalked;
+    }
 }

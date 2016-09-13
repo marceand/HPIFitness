@@ -32,12 +32,15 @@
     <string name="message_label">Hi %s!, stay healthy</string>
     <string name="daily_dist_data">%.1f mi</string>
     <string name="daily_time_data">%d min</string>
-    <string name="daily_pace_data">%.1f mi/s</string>
+    <string name="daily_pace_data">%.1f min/mi</string>
     <string name="achievement_title">Achievement</string>
     <string name="achievement_message">You have %d milestones of 1000 feet. Stay healthy!</string>
 
     <string name="notification_message">Go for a walk today.</string>
-
+    <string name="save_walk_data_title">Walk Activity</string>
+    <string name="save_walk_data_message">Save walk activity data</string>
+    <string name="dismiss_walk_data">Dismiss</string>
+    <string name="save_walk_data">Save</string>
 
 
 </resources>

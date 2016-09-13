@@ -35,6 +35,10 @@ public class Helper {
         return (int)meter/305; // 1000 feet -> 304.8
     }
 
+    public static float calculatePace(long time, float distance){
+        return secondToMinuteConverter(time)/meterToMileConverter(distance); // 1000 feet -> 304.8
+    }
+
     public static String secondToHHMMSS(long secondsCount){
 
         long seconds = secondsCount %60;

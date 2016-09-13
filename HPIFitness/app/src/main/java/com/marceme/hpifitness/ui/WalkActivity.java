@@ -3,6 +3,7 @@ package com.marceme.hpifitness.ui;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -13,8 +14,8 @@ import android.os.Message;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,23 +28,33 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.marceme.hpifitness.R;
+import com.marceme.hpifitness.model.User;
 import com.marceme.hpifitness.service.LocationService;
+import com.marceme.hpifitness.util.Helper;
+import com.marceme.hpifitness.util.PrefControlUtil;
 import com.marceme.hpifitness.util.Util;
 
 import java.lang.ref.WeakReference;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import io.realm.Realm;
 
 public class WalkActivity extends FragmentActivity implements OnMapReadyCallback{
 
     private static final String TAG = WalkActivity.class.getSimpleName();
     private final static int MSG_UPDATE_TIME = 0;
 
-    private TextView mDistanceTextView;
-    private TextView mTimerTextView;
-    private Button mWalkBtn;
+    @BindView(R.id.text_view_distance) TextView mDistanceTextView;
+    @BindView(R.id.text_view_time) TextView mTimerTextView;
+    @BindView(R.id.start_stop_walk_btn) Button mWalkBtn;
+
     private GoogleMap mGoogleMap;
     private LocationService mLocationService;
     private boolean isServiceBound;
     private Marker mLocationMarker;
+    private Realm mRealm;
 
     private final Handler mUIUpdateHandler = new UIUpdateHandler(this);
 
@@ -95,10 +106,11 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_walk);
+        ButterKnife.bind(this);
 
+        mRealm = Realm.getDefaultInstance();
         setUpMap();
-        setUpTextViews();
     }
 
     @Override
@@ -125,6 +137,7 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
         updateStopWalkUI();
         unbindService(mServiceConnection);
         isServiceBound = false;
+        mRealm.close();
     }
 
     private void setUpMap() {
@@ -140,17 +153,55 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
         mWalkBtn = (Button) findViewById(R.id.start_stop_walk_btn);
     }
 
-    public void walkActivityBtnClick(View button) {
+    @OnClick(R.id.start_stop_walk_btn)
+    public void walkActivityBtnClick(Button button) {
         if (isServiceBound && !mLocationService.isUserWalking()) {
             mLocationService.startUserWalk();
             mLocationService.startBroadcasting();
             mLocationService.startForeground();
+            updateWalkPref(true);
             updateStartWalkUI();
         }else if (isServiceBound && mLocationService.isUserWalking()){
             mLocationService.stopUserWalk();
             mLocationService.stopNotification();
             updateStopWalkUI();
+            updateWalkPref(false);
+            saveWalkData(mLocationService.distanceCovered(),mLocationService.elapsedTime());
         }
+    }
+
+    private void saveWalkData(final float distanceWalked, final long timeWalked) {
+        AlertDialog.Builder saveBuilder = new AlertDialog.Builder(this);
+        saveBuilder.setTitle(getString(R.string.save_walk_data_title));
+        saveBuilder.setMessage(getString(R.string.save_walk_data_message));
+        saveBuilder.setNegativeButton(getString(R.string.dismiss_walk_data), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                goToDispatchActivity();
+            }
+        });
+        saveBuilder.setPositiveButton(getString(R.string.save_walk_data), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                User user = mRealm.where(User.class).equalTo("id",PrefControlUtil.getID(PrefControlUtil.USER_ID)).findFirst();
+                if(user != null){
+                    mRealm.beginTransaction();
+                    user.updateDistanceCovered(distanceWalked);
+                    user.updateTotalTimeWalk(timeWalked);
+                    user.setPace(Helper.calculatePace(timeWalked,distanceWalked));
+                    mRealm.commitTransaction();
+                    goToDispatchActivity();
+                }
+            }
+        });
+        saveBuilder.setCancelable(false);
+        saveBuilder.create().show();
+    }
+
+    private void updateWalkPref(boolean isUserWalk) {
+        PrefControlUtil.setUserWalk(PrefControlUtil.USER_WALK, isUserWalk);
     }
 
     private void updateStopWalkUI() {
@@ -214,8 +265,8 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
 
     private void updateUI() {
         if (isServiceBound) {
-            mDistanceTextView.setText(mLocationService.distanceCovered() + " meter");
-            mTimerTextView.setText(mLocationService.elapsedTime() + " s");
+            mDistanceTextView.setText(getString(R.string.daily_dist_data,Helper.meterToMileConverter(mLocationService.distanceCovered())));
+            mTimerTextView.setText(Helper.secondToHHMMSS(mLocationService.elapsedTime()));
         }
     }
 
@@ -235,5 +286,19 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
                 sendEmptyMessageDelayed(MSG_UPDATE_TIME, UPDATE_RATE_MS);
             }
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!PrefControlUtil.isUserWalking()){
+            goToDispatchActivity();
+        }else {
+            finish();
+        }
+    }
+
+    private void goToDispatchActivity() {
+        Intent intent = new Intent(this, DispatchActivity.class);
+        startActivity(intent);
     }
 }

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.model.User;
 import com.marceme.hpifitness.notification.NotificationBroadcaster;
-import com.marceme.hpifitness.util.AuthUtil;
+import com.marceme.hpifitness.util.PrefControlUtil;
 import com.marceme.hpifitness.util.Helper;
 
 import java.util.Calendar;
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         Realm realm = Realm.getDefaultInstance();
-        String id = AuthUtil.getID(AuthUtil.USER_ID);
+        String id = PrefControlUtil.getID(PrefControlUtil.USER_ID);
         User user = realm.where(User.class).equalTo("id",id).findFirst();
         if(user !=null){;
             setDailyStat(user);
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void setDailyStat(User user) {
         String message = String.format(getString(R.string.message_label), user.getFirstName());
-        String dailyDist = String.format(getString(R.string.daily_dist_data), user.getDistanceCovered());
+        String dailyDist = String.format(getString(R.string.daily_dist_data), Helper.meterToMileConverter(user.getDistanceCovered()));
         String dailyTime = String.format(getString(R.string.daily_time_data), Helper.secondToMinuteConverter(user.getTotalTimeWalk()));
         String dailyPace = String.format(getString(R.string.daily_pace_data), user.getPace());
 
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity{
 
         int id = item.getItemId();
         if (id == R.id.action_logout) {
-            AuthUtil.setID(AuthUtil.USER_ID, null);
+            PrefControlUtil.setID(PrefControlUtil.USER_ID, null);
             goToDispatchScreen();
             return true;
         }else if (id == R.id.action_cancel_notification){
@@ -122,6 +122,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    // Assume user controls the periodic reminder: no reminder at office if user turn off notification
     private void scheduleNotification() {
 
         Notification notification = createNotification(getString(R.string.app_name), getString(R.string.notification_message));

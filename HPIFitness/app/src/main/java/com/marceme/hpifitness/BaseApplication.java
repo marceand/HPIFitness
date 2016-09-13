@@ -2,7 +2,7 @@ package com.marceme.hpifitness;
 
 import android.app.Application;
 
-import com.marceme.hpifitness.util.AuthUtil;
+import com.marceme.hpifitness.util.PrefControlUtil;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -17,6 +17,6 @@ public class BaseApplication extends Application {
         RealmConfiguration realmConfig = new RealmConfiguration.Builder(this).schemaVersion(0)
                 .deleteRealmIfMigrationNeeded().build();
         Realm.setDefaultConfiguration(realmConfig);
-        AuthUtil.initSharedPref(this);
+        PrefControlUtil.initSharedPref(this);
     }
 }

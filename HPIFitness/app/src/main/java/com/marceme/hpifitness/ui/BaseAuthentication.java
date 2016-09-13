@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.model.User;
-import com.marceme.hpifitness.util.AuthUtil;
+import com.marceme.hpifitness.util.PrefControlUtil;
 import com.marceme.hpifitness.util.Helper;
 
 import io.realm.Realm;
@@ -128,7 +128,7 @@ public class BaseAuthentication extends AppCompatActivity {
     }
 
     private void persistUserID(String id) {
-        AuthUtil.setID(AuthUtil.USER_ID, id);
+        PrefControlUtil.setID(PrefControlUtil.USER_ID, id);
     }
 
     private void goToDispatch() {

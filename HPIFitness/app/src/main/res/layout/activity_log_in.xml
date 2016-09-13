@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/username_hint"
         android:inputType="textPersonName"
-        android:textColorHint="@color/ligh_gray"
+        android:textColorHint="@color/ligh_gray_color"
         android:layout_marginTop="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginLeft="40dp">
@@ -41,7 +41,7 @@
         android:inputType="textPassword"
         android:hint="@string/password_hint"
         android:ems="10"
-        android:textColorHint="@color/ligh_gray"
+        android:textColorHint="@color/ligh_gray_color"
         android:layout_marginTop="10dp"
         android:layout_marginRight="40dp"
         android:layout_marginLeft="40dp"/>
