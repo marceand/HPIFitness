@@ -54,7 +54,7 @@ public class BaseAuthentication extends AppCompatActivity {
     }
 
     private boolean isEmptyField(String firstName, String username, String password) {
-        if(firstName.isEmpty() || username.isEmpty() || password.isEmpty()) {
+        if(firstName.isEmpty() || username.isEmpty() || password.isEmpty() || password.length() < 4) {
             return true;
         }
         return false;

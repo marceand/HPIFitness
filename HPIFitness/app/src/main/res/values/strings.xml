@@ -17,7 +17,7 @@
     <string name="cancel_text">Cancel</string>
 
     <string name="login_error_title">Checking</string>
-    <string name="login_error_message">Please make sure you enter a username and password!</string>
+    <string name="login_error_message">Please make sure you enter a username and password with more than 4 characters!</string>
     <string name="user_exist_error_message">Username or Password exists</string>
     <string name="not_found_error_message">Incorrect username or password. Try again!</string>
     <string name="log_progress_dialog_message">Logging you in&#8230;</string>
