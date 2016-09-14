@@ -27,6 +27,9 @@ To measure and save user's distance walked, I applied the following libraries:
 # Android Version
 * 5.0 Lollipop - 6.0 Marshmallow
 
+# Warning
+* Turn on GPS after installation
+
 # Screenshot for final app
 ![Alt text](/images/walkactivity.png?raw=true "walkactivity")  
 
@@ -42,7 +45,7 @@ To measure and save user's distance walked, I applied the following libraries:
 
 # Steps Follow to Complete App
 1. Create a repository for the app to record my work process, results from research  
-2. Do research about the best way of getting user walked distance. Result from search:  
+2. Do research about the best way of getting user distance walked. Result from search:  
   * Using Google API to calculate the distance walked
   *	Google Fit API - https://developers.google.com/fit/android/data-types#data_types_for_instantaneous_readings
   *	Accelerometer to calculate the number of walking steps and then calculate distance by multiplying walking steps by walking stride length (too much work).
@@ -76,7 +79,7 @@ To measure and save user's distance walked, I applied the following libraries:
    * Create notification for every 1 hour
 11.	*Sixth Branch:* Connect Main screen to walk screen
   *	Follow Activity lifecycle for updating main screen
-	* Save user walk data in Realm databases
+  * Save user walk data in Realm databases
 12.	*Last Branch:* improve UI, and refactoring
   * Change UI colors
   * Check code for refactoring and naming convention
