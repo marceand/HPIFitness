@@ -71,11 +71,11 @@ To measure and save user's distance walked, I applied the following libraries:
   * Create log in layout
   * Create  Sign up layout
 9.	*Fourth Branch:* Create authentication to Realm database
-	 * Connect Log in to database
+	 * Connect Log in to database  
    * Connect Sign up to database
 10.	*Fifth Branch:* Create main screen
-	 * Create logout
-   * Display main statistic
+	 * Create logout  
+   * Display main statistic  
    * Create notification for every 1 hour
 11.	*Sixth Branch:* Connect Main screen to walk screen
   *	Follow Activity lifecycle for updating main screen
