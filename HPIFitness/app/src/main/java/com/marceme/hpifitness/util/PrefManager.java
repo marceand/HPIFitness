@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
 
-public class PrefControlUtil {
+public class PrefManager {
 
     public static final String USER_ID = "user_id";
     public static final String USER_WALK = "user_walk";

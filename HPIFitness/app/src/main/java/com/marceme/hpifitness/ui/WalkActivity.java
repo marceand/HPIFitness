@@ -30,7 +30,7 @@ import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.model.User;
 import com.marceme.hpifitness.service.LocationService;
 import com.marceme.hpifitness.util.Helper;
-import com.marceme.hpifitness.util.PrefControlUtil;
+import com.marceme.hpifitness.util.PrefManager;
 
 import java.lang.ref.WeakReference;
 
@@ -183,7 +183,7 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                User user = mRealm.where(User.class).equalTo("id",PrefControlUtil.getID(PrefControlUtil.USER_ID)).findFirst();
+                User user = mRealm.where(User.class).equalTo("id", PrefManager.getID(PrefManager.USER_ID)).findFirst();
                 if(user != null){
                     mRealm.beginTransaction();
                     user.updateDistanceCovered(distanceWalked);
@@ -199,7 +199,7 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     private void updateWalkPref(boolean isUserWalk) {
-        PrefControlUtil.setUserWalk(PrefControlUtil.USER_WALK, isUserWalk);
+        PrefManager.setUserWalk(PrefManager.USER_WALK, isUserWalk);
     }
 
     private void updateStopWalkUI() {
@@ -288,7 +288,7 @@ public class WalkActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onBackPressed() {
-        if(!PrefControlUtil.isUserWalking()){
+        if(!PrefManager.isUserWalking()){
             goToDispatchActivity();
         }else {
             finish();

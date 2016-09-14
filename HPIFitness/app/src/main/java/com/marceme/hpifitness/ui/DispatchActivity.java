@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.marceme.hpifitness.util.Helper;
-import com.marceme.hpifitness.util.PrefControlUtil;
+import com.marceme.hpifitness.util.PrefManager;
 
 public class DispatchActivity extends AppCompatActivity {
 
@@ -12,9 +12,9 @@ public class DispatchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(PrefControlUtil.isAuthorized()){
+        if(PrefManager.isAuthorized()){
 
-            if(PrefControlUtil.isUserWalking()) {
+            if(PrefManager.isUserWalking()) {
                 startActivity(Helper.getIntent(this,WalkActivity.class));
             }else {
                 startActivity(Helper.getIntent(this,MainActivity.class));

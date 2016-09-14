@@ -6,9 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.model.User;
 import com.marceme.hpifitness.util.Helper;
-import com.marceme.hpifitness.util.PrefControlUtil;
+import com.marceme.hpifitness.util.PrefManager;
 
-import butterknife.internal.Utils;
 import io.realm.Realm;
 
 /**
@@ -136,7 +135,7 @@ public class BaseAuthentication extends AppCompatActivity {
 
     // Assume id is the app session token id
     private void persistUserID(String id) {
-        PrefControlUtil.setID(PrefControlUtil.USER_ID, id);
+        PrefManager.setID(PrefManager.USER_ID, id);
     }
 
     private void goToDispatch() {

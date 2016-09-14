@@ -18,7 +18,7 @@ import com.marceme.hpifitness.R;
 import com.marceme.hpifitness.model.User;
 import com.marceme.hpifitness.notification.NotificationBroadcaster;
 import com.marceme.hpifitness.util.Helper;
-import com.marceme.hpifitness.util.PrefControlUtil;
+import com.marceme.hpifitness.util.PrefManager;
 
 import java.util.Calendar;
 
@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity{
         ButterKnife.bind(this);
 
         Realm realm = Realm.getDefaultInstance();
-        String id = PrefControlUtil.getID(PrefControlUtil.USER_ID);
+        String id = PrefManager.getID(PrefManager.USER_ID);
         User user = realm.where(User.class).equalTo("id",id).findFirst();
         if(user != null){;
             setDailyStat(user);
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity{
 
         int id = item.getItemId();
         if (id == R.id.action_logout) {
-            PrefControlUtil.setID(PrefControlUtil.USER_ID, null);
+            PrefManager.setID(PrefManager.USER_ID, null);
             goToDispatchScreen();
             return true;
         }else if (id == R.id.action_cancel_notification){
